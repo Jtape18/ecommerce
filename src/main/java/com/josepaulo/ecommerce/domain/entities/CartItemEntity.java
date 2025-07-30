@@ -1,5 +1,7 @@
 package com.josepaulo.ecommerce.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +28,7 @@ public class CartItemEntity {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     private CartEntity cart;
 
     @ManyToOne
