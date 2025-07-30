@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.josepaulo.ecommerce.application.useCases.CreateUserUseCase;
+import com.josepaulo.ecommerce.application.useCases.user.CreateUserUseCase;
 import com.josepaulo.ecommerce.domain.entities.UserEntity;
 import com.josepaulo.ecommerce.interfaces.dto.UserRequestDTO;
 import com.josepaulo.ecommerce.interfaces.dto.UserResponseDTO;

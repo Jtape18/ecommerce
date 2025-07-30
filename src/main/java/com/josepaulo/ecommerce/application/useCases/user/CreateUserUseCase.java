@@ -1,4 +1,4 @@
-package com.josepaulo.ecommerce.application.useCases;
+package com.josepaulo.ecommerce.application.useCases.user;
 
 import java.util.List;
 
