@@ -2,8 +2,11 @@ package com.josepaulo.ecommerce.interfaces.controller;
 
 
 import com.josepaulo.ecommerce.application.useCases.order.CreateOrderUseCase;
+import com.josepaulo.ecommerce.application.useCases.order.GetOrderDetailsUseCase;
 import com.josepaulo.ecommerce.application.useCases.order.ListUserOrdersUseCase;
 import com.josepaulo.ecommerce.domain.entities.OrderEntity;
+import com.josepaulo.ecommerce.interfaces.dto.OrderDetailResponseDTO;
+import com.josepaulo.ecommerce.interfaces.dto.OrderItemDetailDTO;
 import com.josepaulo.ecommerce.interfaces.dto.OrderListResponseDTO;
 import com.josepaulo.ecommerce.interfaces.dto.OrderResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +21,28 @@ public class OrderController {
 
     private final CreateOrderUseCase createOrderUseCase;
     private final ListUserOrdersUseCase listUserOrdersUseCase;
+    private final GetOrderDetailsUseCase getOrderDetailsUseCase;
 
     @PostMapping("/checkout/{userId}")
     public OrderResponseDTO checkout(@PathVariable Long userId) {
         OrderEntity order = createOrderUseCase.checkout(userId);
         return new OrderResponseDTO(order.getId(), order.getTotal(), order.getStatus());
     }
+
+    @GetMapping("/{orderId}")
+    public OrderDetailResponseDTO getOrderDetails(@PathVariable Long orderId) {
+        var order = getOrderDetailsUseCase.execute(orderId);
+
+        var items = order.getItems().stream()
+                .map(item -> new OrderItemDetailDTO(
+                        item.getProduct().getName(),
+                        item.getProduct().getPrice(),
+                        item.getQuantity()))
+                .toList();
+
+        return new OrderDetailResponseDTO(order.getId(), order.getTotal(), order.getStatus(), items);
+    }
+
     @GetMapping("/user/{userId}")
     public List<OrderListResponseDTO> listOrdersByUser(@PathVariable Long userId) {
         return listUserOrdersUseCase.execute(userId).stream()

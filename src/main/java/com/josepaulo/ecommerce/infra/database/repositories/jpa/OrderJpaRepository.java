@@ -5,6 +5,7 @@ import com.josepaulo.ecommerce.domain.repositories.IOrderRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrderJpaRepository implements IOrderRepository {
@@ -24,5 +25,10 @@ public class OrderJpaRepository implements IOrderRepository {
     public List<OrderEntity> findByUserId(Long userId) {
         return repository.findByUserId(userId);
     }
+    @Override
+    public Optional<OrderEntity> findById(Long id) {
+        return repository.findById(id);
+    }
+
 
 }
