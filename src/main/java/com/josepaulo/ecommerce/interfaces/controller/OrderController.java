@@ -4,6 +4,11 @@ package com.josepaulo.ecommerce.interfaces.controller;
 import com.josepaulo.ecommerce.application.useCases.order.*;
 import com.josepaulo.ecommerce.domain.entities.OrderEntity;
 import com.josepaulo.ecommerce.interfaces.dto.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
+@Tag(name = "Order Management", description = "Endpoints for managing orders")
 public class OrderController {
 
     private final CreateOrderUseCase createOrderUseCase;
@@ -22,12 +28,18 @@ public class OrderController {
     private final SimulatePaymentUseCase simulatePaymentUseCase;
 
     @PostMapping("/checkout/{userId}")
+    @Operation(summary = "Checkout an order for a user")
+    @ApiResponse(responseCode = "200", description = "Order checked out successfully",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrderResponseDTO.class)))
     public OrderResponseDTO checkout(@PathVariable Long userId) {
         OrderEntity order = createOrderUseCase.checkout(userId);
         return new OrderResponseDTO(order.getId(), order.getTotal(), order.getStatus());
     }
 
     @PostMapping("/{orderId}/pay")
+    @Operation(summary = "Simulate payment for an order")
+    @ApiResponse(responseCode = "200", description = "Payment simulated successfully",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDetailResponseDTO.class)))
     public OrderDetailResponseDTO simulatePayment(@PathVariable Long orderId) {
         var order = simulatePaymentUseCase.execute(orderId);
 
@@ -43,6 +55,7 @@ public class OrderController {
 
 
     @GetMapping("/{orderId}")
+    @Operation(summary = "Get order details by order ID")
     public OrderDetailResponseDTO getOrderDetails(@PathVariable Long orderId) {
         var order = getOrderDetailsUseCase.execute(orderId);
 
@@ -57,6 +70,7 @@ public class OrderController {
     }
 
     @GetMapping("/user/{userId}")
+    @Operation(summary = "List all orders for a specific user")
     public List<OrderListResponseDTO> listOrdersByUser(@PathVariable Long userId) {
         return listUserOrdersUseCase.execute(userId).stream()
                 .map(order -> new OrderListResponseDTO(order.getId(), order.getTotal(), order.getStatus()))
@@ -64,6 +78,9 @@ public class OrderController {
     }
 
     @PatchMapping("/{orderId}/status")
+    @Operation(summary = "Update the status of an order")
+    @ApiResponse(responseCode = "200", description = "Order status updated successfully",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDetailResponseDTO.class)))
     public OrderDetailResponseDTO updateOrderStatus(
             @PathVariable Long orderId,
             @RequestBody @Valid UpdateOrderStatusDTO dto) {

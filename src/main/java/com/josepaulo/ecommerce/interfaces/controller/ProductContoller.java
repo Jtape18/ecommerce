@@ -3,6 +3,12 @@ package com.josepaulo.ecommerce.interfaces.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.josepaulo.ecommerce.interfaces.dto.UserResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +26,15 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
+@Tag(name = "Product Management", description = "Endpoints for managing products")
 public class ProductContoller {
 
     private final CreateProductUseCase createProductUseCase;
 
     @PostMapping
+    @Operation(summary = "Create a new product")
+    @ApiResponse(responseCode = "200", description = "Product created successfully",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductResponseDTO.class)))
     public ProductResponseDTO createProduct(@RequestBody @Valid ProductRequestDTO dto) {
         ProductEntity product = ProductEntity.builder()
                 .name(dto.getName())
@@ -40,6 +50,7 @@ public class ProductContoller {
     }
 
     @GetMapping
+    @Operation(summary = "List all products")
     public List<ProductResponseDTO> listProducts() {
         return createProductUseCase.findAll().stream()
                 .map(p -> new ProductResponseDTO(p.getId(), p.getName(), p.getDescription(), p.getPrice(),
