@@ -4,11 +4,10 @@ package com.josepaulo.ecommerce.interfaces.controller;
 import com.josepaulo.ecommerce.application.useCases.order.CreateOrderUseCase;
 import com.josepaulo.ecommerce.application.useCases.order.GetOrderDetailsUseCase;
 import com.josepaulo.ecommerce.application.useCases.order.ListUserOrdersUseCase;
+import com.josepaulo.ecommerce.application.useCases.order.UpdateOrderStatusUseCase;
 import com.josepaulo.ecommerce.domain.entities.OrderEntity;
-import com.josepaulo.ecommerce.interfaces.dto.OrderDetailResponseDTO;
-import com.josepaulo.ecommerce.interfaces.dto.OrderItemDetailDTO;
-import com.josepaulo.ecommerce.interfaces.dto.OrderListResponseDTO;
-import com.josepaulo.ecommerce.interfaces.dto.OrderResponseDTO;
+import com.josepaulo.ecommerce.interfaces.dto.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +21,7 @@ public class OrderController {
     private final CreateOrderUseCase createOrderUseCase;
     private final ListUserOrdersUseCase listUserOrdersUseCase;
     private final GetOrderDetailsUseCase getOrderDetailsUseCase;
+    private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
 
     @PostMapping("/checkout/{userId}")
     public OrderResponseDTO checkout(@PathVariable Long userId) {
@@ -48,5 +48,27 @@ public class OrderController {
         return listUserOrdersUseCase.execute(userId).stream()
                 .map(order -> new OrderListResponseDTO(order.getId(), order.getTotal(), order.getStatus()))
                 .toList();
+    }
+
+    @PatchMapping("/{orderId}/status")
+    public OrderDetailResponseDTO updateOrderStatus(
+            @PathVariable Long orderId,
+            @RequestBody @Valid UpdateOrderStatusDTO dto) {
+
+        var updatedOrder = updateOrderStatusUseCase.execute(orderId, dto.getStatus());
+
+        var items = updatedOrder.getItems().stream()
+                .map(item -> new OrderItemDetailDTO(
+                        item.getProduct().getName(),
+                        item.getProduct().getPrice(),
+                        item.getQuantity()))
+                .toList();
+
+        return new OrderDetailResponseDTO(
+                updatedOrder.getId(),
+                updatedOrder.getTotal(),
+                updatedOrder.getStatus(),
+                items
+        );
     }
 }
