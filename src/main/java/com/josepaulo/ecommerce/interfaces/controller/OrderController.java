@@ -1,10 +1,7 @@
 package com.josepaulo.ecommerce.interfaces.controller;
 
 
-import com.josepaulo.ecommerce.application.useCases.order.CreateOrderUseCase;
-import com.josepaulo.ecommerce.application.useCases.order.GetOrderDetailsUseCase;
-import com.josepaulo.ecommerce.application.useCases.order.ListUserOrdersUseCase;
-import com.josepaulo.ecommerce.application.useCases.order.UpdateOrderStatusUseCase;
+import com.josepaulo.ecommerce.application.useCases.order.*;
 import com.josepaulo.ecommerce.domain.entities.OrderEntity;
 import com.josepaulo.ecommerce.interfaces.dto.*;
 import jakarta.validation.Valid;
@@ -22,12 +19,28 @@ public class OrderController {
     private final ListUserOrdersUseCase listUserOrdersUseCase;
     private final GetOrderDetailsUseCase getOrderDetailsUseCase;
     private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
+    private final SimulatePaymentUseCase simulatePaymentUseCase;
 
     @PostMapping("/checkout/{userId}")
     public OrderResponseDTO checkout(@PathVariable Long userId) {
         OrderEntity order = createOrderUseCase.checkout(userId);
         return new OrderResponseDTO(order.getId(), order.getTotal(), order.getStatus());
     }
+
+    @PostMapping("/{orderId}/pay")
+    public OrderDetailResponseDTO simulatePayment(@PathVariable Long orderId) {
+        var order = simulatePaymentUseCase.execute(orderId);
+
+        var items = order.getItems().stream()
+                .map(item -> new OrderItemDetailDTO(
+                        item.getProduct().getName(),
+                        item.getProduct().getPrice(),
+                        item.getQuantity()))
+                .toList();
+
+        return new OrderDetailResponseDTO(order.getId(), order.getTotal(), order.getStatus(), items);
+    }
+
 
     @GetMapping("/{orderId}")
     public OrderDetailResponseDTO getOrderDetails(@PathVariable Long orderId) {
