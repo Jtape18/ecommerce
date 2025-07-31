@@ -21,15 +21,23 @@ public class CartUseCase {
     private final IUserRepository userRepository;
 
     public CartEntity addProduct(Long userId, Long productId, Integer quantity) {
+        if (quantity == null || quantity <= 0) {
+            throw new RuntimeException("Quantity invalid");
+        }
+
         var user = userRepository.findAll().stream()
                 .filter(u -> u.getId().equals(userId))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("User not found!"));
 
         var product = productRepository.findAll().stream()
                 .filter(p -> p.getId().equals(productId))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        if (product.getStock() < quantity) {
+            throw new RuntimeException("Insufficient stock for the product '" + product.getName() + "'");
+        }
 
         var cart = cartRepository.findByUserId(userId)
                 .orElse(CartEntity.builder()
@@ -37,17 +45,33 @@ public class CartUseCase {
                         .items(new ArrayList<>())
                         .build());
 
-        var item = CartItemEntity.builder()
-                .cart(cart)
-                .product(product)
-                .quantity(quantity)
-                .build();
+        var existingItem = cart.getItems().stream()
+                .filter(i -> i.getProduct().getId().equals(productId))
+                .findFirst();
 
-        cart.getItems().add(item);
+        if (existingItem.isPresent()) {
+            var item = existingItem.get();
+            int novaQuantidade = item.getQuantity() + quantity;
+
+            if (novaQuantidade > product.getStock()) {
+                throw new RuntimeException("Insufficient stock to update the quantity in the cart");
+            }
+
+            item.setQuantity(novaQuantidade);
+        } else {
+            var newItem = CartItemEntity.builder()
+                    .cart(cart)
+                    .product(product)
+                    .quantity(quantity)
+                    .build();
+            cart.getItems().add(newItem);
+        }
+
         return cartRepository.save(cart);
     }
 
     public CartEntity getCart(Long userId) {
-        return cartRepository.findByUserId(userId).orElseThrow();
+        return cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found for user"));
     }
 }
