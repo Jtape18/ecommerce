@@ -1,6 +1,7 @@
 package com.josepaulo.ecommerce.infra.database.repositories.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,16 @@ public class ProductJpaRepository implements IProductRepository {
     @Override
     public List<ProductEntity> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Optional<ProductEntity> findById(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 
 }
