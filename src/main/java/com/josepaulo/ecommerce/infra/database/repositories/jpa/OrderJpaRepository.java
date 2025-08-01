@@ -2,6 +2,7 @@ package com.josepaulo.ecommerce.infra.database.repositories.jpa;
 
 import com.josepaulo.ecommerce.domain.entities.OrderEntity;
 import com.josepaulo.ecommerce.domain.repositories.IOrderRepository;
+import com.josepaulo.ecommerce.infra.database.projections.OrderStatusTotalProjection;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,6 +12,12 @@ import java.util.Optional;
 public class OrderJpaRepository implements IOrderRepository {
 
     private final SpringDataOrderRepository repository;
+
+
+    public List<OrderStatusTotalProjection> getTotalSalesByStatus(java.time.LocalDateTime start,
+                                                                  java.time.LocalDateTime end) {
+        return repository.getTotalSalesByStatus(start, end);
+    }
 
     public OrderJpaRepository(SpringDataOrderRepository repository) {
         this.repository = repository;
