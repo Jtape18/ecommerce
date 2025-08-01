@@ -1,6 +1,7 @@
 package com.josepaulo.ecommerce.infra.database.repositories.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.josepaulo.ecommerce.infra.database.repositories.springdata.SpringDataUserRepository;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,11 @@ public class UserJpaRepository implements IUserRepository {
     @Override
     public List<UserEntity> findAll() {
         return springDataUserRepository.findAll();
+    }
+
+    @Override
+    public Optional<UserEntity> findByEmail(String email) {
+        return springDataUserRepository.findByEmail(email);
     }
 
 }
