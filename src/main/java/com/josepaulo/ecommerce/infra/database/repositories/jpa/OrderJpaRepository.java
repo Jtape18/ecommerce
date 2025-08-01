@@ -3,6 +3,7 @@ package com.josepaulo.ecommerce.infra.database.repositories.jpa;
 import com.josepaulo.ecommerce.domain.entities.OrderEntity;
 import com.josepaulo.ecommerce.domain.repositories.IOrderRepository;
 import com.josepaulo.ecommerce.infra.database.projections.OrderStatusTotalProjection;
+import com.josepaulo.ecommerce.infra.database.repositories.springdata.SpringDataOrderRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

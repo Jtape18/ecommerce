@@ -1,4 +1,4 @@
-package com.josepaulo.ecommerce.infra.database.repositories.jpa;
+package com.josepaulo.ecommerce.infra.database.repositories.springdata;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;

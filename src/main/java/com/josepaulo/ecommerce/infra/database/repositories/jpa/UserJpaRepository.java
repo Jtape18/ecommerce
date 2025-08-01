@@ -2,6 +2,7 @@ package com.josepaulo.ecommerce.infra.database.repositories.jpa;
 
 import java.util.List;
 
+import com.josepaulo.ecommerce.infra.database.repositories.springdata.SpringDataUserRepository;
 import org.springframework.stereotype.Repository;
 
 import com.josepaulo.ecommerce.domain.entities.UserEntity;

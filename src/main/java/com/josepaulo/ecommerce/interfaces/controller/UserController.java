@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.josepaulo.ecommerce.application.useCases.user.CreateUserUseCase;
 import com.josepaulo.ecommerce.domain.entities.UserEntity;
-import com.josepaulo.ecommerce.interfaces.dto.UserRequestDTO;
-import com.josepaulo.ecommerce.interfaces.dto.UserResponseDTO;
+import com.josepaulo.ecommerce.interfaces.dto.user.UserRequestDTO;
+import com.josepaulo.ecommerce.interfaces.dto.user.UserResponseDTO;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

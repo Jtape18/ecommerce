@@ -1,4 +1,4 @@
-package com.josepaulo.ecommerce.interfaces.dto;
+package com.josepaulo.ecommerce.interfaces.dto.order;
 
 import com.josepaulo.ecommerce.domain.enums.OrderStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -7,14 +7,13 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-
 @Data
 @AllArgsConstructor
-@Schema(description = "DTO for order response")
-public class OrderResponseDTO {
+@Schema(description = "DTO for order list response")
+public class OrderListResponseDTO {
 
     @Schema(description = "ID of the order", example = "1")
-    private Long orderId;
+    private Long id;
 
     @Schema(description = "User associated with the order")
     private BigDecimal total;

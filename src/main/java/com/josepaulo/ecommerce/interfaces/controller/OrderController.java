@@ -3,7 +3,7 @@ package com.josepaulo.ecommerce.interfaces.controller;
 
 import com.josepaulo.ecommerce.application.useCases.order.*;
 import com.josepaulo.ecommerce.domain.entities.OrderEntity;
-import com.josepaulo.ecommerce.interfaces.dto.*;
+import com.josepaulo.ecommerce.interfaces.dto.order.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

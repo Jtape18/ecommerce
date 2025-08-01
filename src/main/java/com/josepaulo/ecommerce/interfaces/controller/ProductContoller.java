@@ -1,11 +1,9 @@
 package com.josepaulo.ecommerce.interfaces.controller;
 
-import java.util.stream.Collectors;
-
 import com.josepaulo.ecommerce.application.useCases.product.*;
 import com.josepaulo.ecommerce.domain.entities.ProductEntity;
-import com.josepaulo.ecommerce.interfaces.dto.ProductRequestDTO;
-import com.josepaulo.ecommerce.interfaces.dto.ProductResponseDTO;
+import com.josepaulo.ecommerce.interfaces.dto.product.ProductRequestDTO;
+import com.josepaulo.ecommerce.interfaces.dto.product.ProductResponseDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

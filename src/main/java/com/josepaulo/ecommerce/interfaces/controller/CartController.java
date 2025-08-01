@@ -1,6 +1,6 @@
 package com.josepaulo.ecommerce.interfaces.controller;
 
-import com.josepaulo.ecommerce.interfaces.dto.UserResponseDTO;
+import com.josepaulo.ecommerce.interfaces.dto.user.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.josepaulo.ecommerce.application.useCases.cart.CartUseCase;
 import com.josepaulo.ecommerce.domain.entities.CartEntity;
-import com.josepaulo.ecommerce.interfaces.dto.AddProductToCartDTO;
+import com.josepaulo.ecommerce.interfaces.dto.product.AddProductToCartDTO;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

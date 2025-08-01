@@ -1,4 +1,4 @@
-package com.josepaulo.ecommerce.interfaces.dto;
+package com.josepaulo.ecommerce.interfaces.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

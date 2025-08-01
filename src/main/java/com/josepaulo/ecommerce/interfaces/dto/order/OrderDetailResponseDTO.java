@@ -1,4 +1,4 @@
-package com.josepaulo.ecommerce.interfaces.dto;
+package com.josepaulo.ecommerce.interfaces.dto.order;
 
 import com.josepaulo.ecommerce.domain.enums.OrderStatus;
 import io.swagger.v3.oas.annotations.media.Schema;

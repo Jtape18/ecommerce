@@ -1,4 +1,4 @@
-package com.josepaulo.ecommerce.infra.database.repositories.jpa;
+package com.josepaulo.ecommerce.infra.database.repositories.springdata;
 
 import com.josepaulo.ecommerce.domain.entities.OrderEntity;
 import com.josepaulo.ecommerce.infra.database.projections.OrderStatusTotalProjection;
