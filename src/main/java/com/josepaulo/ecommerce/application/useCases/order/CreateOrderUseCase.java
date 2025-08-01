@@ -21,16 +21,16 @@ public class CreateOrderUseCase {
 
     public OrderEntity checkout(Long userId) {
         CartEntity cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Cart not found! "));
 
         if (cart.getItems().isEmpty()) {
-            throw new RuntimeException("Carrinho está vazio");
+            throw new RuntimeException("Cart is empty!");
         }
 
         for (CartItemEntity item : cart.getItems()) {
             var product = item.getProduct();
             if (product.getStock() < item.getQuantity()) {
-                throw new RuntimeException("Estoque insuficiente para o produto '" + product.getName() + "'");
+                throw new RuntimeException("Stock invalid to the product" + product.getName() + "'");
             }
         }
 

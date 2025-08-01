@@ -1,6 +1,5 @@
 package com.josepaulo.ecommerce.application.useCases.order;
 
-
 import com.josepaulo.ecommerce.domain.entities.OrderEntity;
 import com.josepaulo.ecommerce.domain.repositories.IOrderRepository;
 import lombok.RequiredArgsConstructor;

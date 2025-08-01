@@ -1,26 +1,24 @@
 package com.josepaulo.ecommerce.interfaces.controller;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
-import com.josepaulo.ecommerce.application.useCases.product.DeleteProductUseCase;
-import com.josepaulo.ecommerce.application.useCases.product.GetProductByIdUseCase;
-import com.josepaulo.ecommerce.application.useCases.product.UpdateProductUseCase;
-import com.josepaulo.ecommerce.interfaces.dto.UserResponseDTO;
+import com.josepaulo.ecommerce.application.useCases.product.*;
+import com.josepaulo.ecommerce.domain.entities.ProductEntity;
+import com.josepaulo.ecommerce.interfaces.dto.ProductRequestDTO;
+import com.josepaulo.ecommerce.interfaces.dto.ProductResponseDTO;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
-
-import com.josepaulo.ecommerce.application.useCases.product.CreateProductUseCase;
-import com.josepaulo.ecommerce.domain.entities.ProductEntity;
-import com.josepaulo.ecommerce.interfaces.dto.ProductRequestDTO;
-import com.josepaulo.ecommerce.interfaces.dto.ProductResponseDTO;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/products")
@@ -32,33 +30,28 @@ public class ProductContoller {
     private final GetProductByIdUseCase getProductByIdUseCase;
     private final UpdateProductUseCase updateProductUseCase;
     private final DeleteProductUseCase deleteProductUseCase;
-
+    private final ListPagedProductsUseCase listPagedProductsUseCase;
 
     @PostMapping
     @Operation(summary = "Create a new product")
     @ApiResponse(responseCode = "200", description = "Product created successfully",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductResponseDTO.class)))
     public ProductResponseDTO createProduct(@RequestBody @Valid ProductRequestDTO dto) {
-        ProductEntity product = ProductEntity.builder()
+        var product = createProductUseCase.execute(ProductEntity.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .price(dto.getPrice())
                 .stock(dto.getStock())
-                .build();
+                .build());
 
-        ProductEntity saved = createProductUseCase.execute(product);
-
-        return new ProductResponseDTO(saved.getId(), saved.getName(), saved.getDescription(), saved.getPrice(),
-                saved.getStock());
+        return new ProductResponseDTO(product.getId(), product.getName(), product.getDescription(), product.getPrice(), product.getStock());
     }
 
     @GetMapping
-    @Operation(summary = "List all products")
-    public List<ProductResponseDTO> listProducts() {
-        return createProductUseCase.findAll().stream()
-                .map(p -> new ProductResponseDTO(p.getId(), p.getName(), p.getDescription(), p.getPrice(),
-                        p.getStock()))
-                .collect(Collectors.toList());
+    @Operation(summary = "List paged products")
+    public Page<ProductResponseDTO> listPagedProducts(Pageable pageable) {
+        return listPagedProductsUseCase.execute(pageable)
+                .map(p -> new ProductResponseDTO(p.getId(), p.getName(), p.getDescription(), p.getPrice(), p.getStock()));
     }
 
     @GetMapping("/{id}")
@@ -87,6 +80,4 @@ public class ProductContoller {
     public void deleteProduct(@PathVariable Long id) {
         deleteProductUseCase.execute(id);
     }
-
-
 }

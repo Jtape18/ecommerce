@@ -3,6 +3,8 @@ package com.josepaulo.ecommerce.infra.database.repositories.jpa;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.josepaulo.ecommerce.domain.entities.ProductEntity;
@@ -35,6 +37,11 @@ public class ProductJpaRepository implements IProductRepository {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Page<ProductEntity> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
 }
