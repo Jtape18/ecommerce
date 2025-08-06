@@ -1,90 +1,118 @@
 # 🛒 E-commerce API
 
-API RESTful para gerenciamento de um sistema de E-commerce, construída com Java + Spring Boot, seguindo os princípios da Clean Architecture.
+API REST para gerenciamento de e-commerce desenvolvida com **Java + Spring Boot**, seguindo os princípios de **Clean Architecture**. Este projeto permite o cadastro de produtos, gerenciamento de pedidos, controle de estoque e autenticação de usuários via JWT.
 
-## 📦 Funcionalidades
+---
 
-- ✅ Registro e login de usuários com autenticação JWT
-- ✅ Cadastro, atualização, listagem e exclusão de produtos
-- ✅ Adição de produtos ao carrinho
-- ✅ Criação e simulação de pedidos
-- ✅ Pagamento e atualização de status de pedidos
-- ✅ Histórico de status dos pedidos
-- ✅ Relatório financeiro por status de pedido e período
-- ✅ Swagger para documentação interativa da API
+## 🚀 Funcionalidades
 
-## 🛠️ Tecnologias
+- ✅ Registro e login de usuários com JWT
+- ✅ Autenticação e autorização por perfil (ROLE_USER, ROLE_ADMIN)
+- ✅ CRUD de produtos
+- ✅ Criação e gerenciamento de pedidos
+- ✅ Atualização de estoque automática no checkout
+- ✅ Relatório de vendas por período
+- ✅ Integração com banco PostgreSQL
+- ✅ Documentação Swagger
+
+---
+
+## 🛠️ Tecnologias utilizadas
 
 - Java 17
-- Spring Boot 3
-- Spring Security (JWT)
-- JPA (Hibernate)
-- PostgreSQL (via Docker)
-- Lombok
-- Swagger/OpenAPI
+- Spring Boot 3.x
+- Spring Security + JWT
+- Maven
+- PostgreSQL
+- Docker
+- Swagger (SpringDoc OpenAPI)
+- Render (Deploy)
 
-## 🗂️ Organização do Projeto
+---
+
+## 📁 Estrutura de pastas (Clean Architecture)
 
 ```
 src
-├── application/useCases    # Casos de uso da aplicação
-├── domain                  # Entidades, enums e interfaces dos repositórios
-├── infra/database          # Implementações com JPA + Spring Data
-├── interfaces/controller   # Camada de exposição da API (REST)
-├── interfaces/dto          # Data Transfer Objects
-├── config                  # Configurações de segurança e Swagger
+├── application
+│   └── useCases         # Casos de uso (regras de negócio)
+├── domain
+│   ├── entities         # Entidades do domínio
+│   ├── enums            # Enums como OrderStatus, Role etc.
+│   └── repositories     # Interfaces dos repositórios
+├── infra
+│   └── database
+│       └── repositories # Implementações JPA dos repositórios
+├── interfaces
+│   ├── controller       # Controllers REST
+│   └── dto              # DTOs de entrada e saída
+└── config               # Configurações (Security, Swagger, etc)
 ```
 
-## 🚀 Como Executar
+---
 
-### Pré-requisitos
+## 💻 Rodando localmente
 
+### Pré-requisitos:
 - Java 17+
-- Docker & Docker Compose
+- Docker
 - Maven
 
-### Passos
-
-1. Clone o repositório
-2. Inicie o banco de dados:
+### Passos:
 
 ```bash
+# 1. Clonar o repositório
+git clone https://github.com/Jtape18/ecommerce.git
+cd ecommerce
+
+# 2. Subir o banco de dados
 docker-compose up -d
-```
 
-3. Execute o projeto:
-
-```bash
+# 3. Rodar a aplicação
 ./mvnw spring-boot:run
 ```
 
-4. Acesse a documentação da API:
+---
+
+## 🔐 Autenticação JWT
+
+- Registre um usuário: `POST /auth/register`
+- Faça login: `POST /auth/login`
+- Copie o token e utilize como Bearer Token nas demais rotas protegidas
+
+---
+
+## 📄 Documentação Swagger
+
+Acesse:
 
 ```
 http://localhost:8080/swagger-ui/index.html
 ```
 
-## 🔐 Autenticação
+Ou, se estiver hospedado no Render:
 
-Utilize o endpoint `/auth/register` para criar o user. Em seguida, siga para o próximo passo.
-
-
-Utilize o endpoint `/auth/login` para obter o token JWT. Em seguida, insira o token como Bearer Token no Swagger ou Postman para acessar as rotas protegidas.
-
----
-
-## 📊 Exemplo de Relatório
-
-```http
-GET /report/sales?start=2024-01-01T00:00:00&end=2024-12-31T23:59:59
 ```
+https://ecommerce-1-7tjy.onrender.com/swagger-ui/index.html```
+```
+---
 
-Retorna as vendas agrupadas por status (`PENDING`, `PAID`, `SHIPPED`, `DELIVERED`) com o total de cada uma.
+## ☁️ Deploy no Render
+
+- Banco PostgreSQL criado no painel Render
+- Dockerfile configurado na raiz do projeto
+- Variáveis de ambiente adicionadas via dashboard:
+    - `SPRING_DATASOURCE_URL`
+    - `SPRING_DATASOURCE_USERNAME`
+    - `SPRING_DATASOURCE_PASSWORD`
 
 ---
 
-## 🧑‍💻 Desenvolvedor
 
-**José Matias**  
-Desenvolvedor Back-end Java  
-[LinkedIn](https://www.linkedin.com/in/jtape18/) • [GitHub](https://github.com/Jtape18)
+
+## 🧑‍💻 Autor
+
+[José Matias](https://www.linkedin.com/in/jtape18/)  
+Back-end Developer • Java • Spring Boot • Clean Architecture
+
+---
